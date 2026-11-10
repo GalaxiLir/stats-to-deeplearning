@@ -10,5 +10,10 @@ dependencies = ["numpy", "pandas", "matplotlib"]   # ≈ Imports: de DESCRIPTION
 
 [tool.setuptools.dynamic]
 version = { attr = "tsunc.__version__" }
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
 [tool.setuptools.packages.find]
-where = ["src"]                        # le code est dans src/ (disposition « src layout »)
+where = ["src"]
+include = ["tsunc*"]                        # le code est dans src/ (disposition « src layout »)
