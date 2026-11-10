@@ -1,9 +1,15 @@
+---
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
 # stats-to-deeplearning
 
-Du statisticien au deep learning : projets reproductibles, avec baselines
-classiques, évaluation rigoureuse et incertitude quantifiée.
+Du statisticien au deep learning : projets reproductibles, avec
+baselines classiques, évaluation rigoureuse et incertitude quantifiée.
 
-Auteur : [Prénom Nom], statisticien et mathématicien appliqué (doctorat),
+Auteur : [Alix Rigal], statisticien et mathématicien appliqué ,
 co-fondateur de TransverseLab. Enseignement (ENAC, ENM) et conseil R&D.
 [Lien LinkedIn / page personnelle]
 
@@ -11,52 +17,56 @@ co-fondateur de TransverseLab. Enseignement (ENAC, ENM) et conseil R&D.
 
 Chaque projet suit la même méthode :
 
-1. une question claire ;
-2. une baseline classique (scikit-learn, statsmodels, R) ;
-3. un modèle PyTorch ;
-4. une évaluation honnête : validation adaptée, sans fuite d'information,
-   avec intervalles d'incertitude ;
-5. un tableau comparatif, y compris quand le modèle profond ne gagne pas.
+1.  une question claire ;
+2.  un modèle de référence (scikit-learn, statsmodels, R) ;
+3.  un modèle PyTorch ;
+4.  une évaluation honnête : validation adaptée, sans fuite
+    d'information, avec intervalles d'incertitude ;
+5.  un tableau comparatif, y compris quand le modèle profond ne gagne
+    pas.
 
 ## Projets
 
-| # | Projet | Thème | Statut | Exécuter |
-|---|---|---|---|---|
+| \# | Projet | Thème | Statut | Exécuter |
+|---------------|---------------|---------------|---------------|---------------|
 | 1 | [Prévision de séries temporelles avec incertitude](projects/01-timeseries-forecasting) | Séries temporelles | en cours | [Colab](lien) |
-| 2 | [Segmentation d'images 3D](projects/02-3d-segmentation) | Images 3D | à venir | |
-| 3 | [Réseau pré-entraîné : fine-tuning et décalage de domaine](projects/03-pretrained-networks) | Pédagogie | à venir | |
+| 2 | [Segmentation d'images 3D](projects/02-3d-segmentation) | Images 3D | à venir |  |
+| 3 | [Réseau pré-entraîné : fine-tuning et décalage de domaine](projects/03-pretrained-networks) | Pédagogie | à venir |  |
 
 ## Parcours pédagogique : les architectures historiques
 
-Pour chaque architecture : le point bloquant de l'époque, l'idée qui l'a levé,
-une reproduction minimale et une expérience qui montre le blocage puis son
-dépassement.
+Pour chaque architecture : le point bloquant de l'époque, l'idée qui l'a
+levé, une reproduction minimale et une expérience qui montre le blocage
+puis son dépassement.
 
-| Architecture | Point bloquant | Statut |
-|---|---|---|
-| Perceptron | [à compléter] | à venir |
-| Rétropropagation | [à compléter] | à venir |
-| LeNet | [à compléter] | à venir |
-| ResNet | Gradient évanescent / dégradation en profondeur | à venir |
-| Transformer | [à compléter] | à venir |
+| Architecture     | Point bloquant                                  | Statut  |
+|------------------|-------------------------------------------------|---------|
+| Perceptron       | [à compléter]                                   | à venir |
+| Rétropropagation | [à compléter]                                   | à venir |
+| LeNet            | [à compléter]                                   | à venir |
+| ResNet           | Gradient évanescent / dégradation en profondeur | à venir |
+| Transformer      | [à compléter]                                   | à venir |
 
 (Liste complète dans `teaching/`, ajoutée au fur et à mesure.)
 
 ## Compétences démontrées
 
-- Apprentissage automatique : scikit-learn, validation croisée, régularisation.
-- Deep learning : PyTorch, [PyTorch Lightning], séries temporelles, imagerie 3D.
-- Optimisation : comparaison de SGD, Adam, RMSprop.
-- Statistique : vraisemblance et fonctions de perte, biais-variance, conformal
-  prediction.
-- Pratiques : Git, conda/pip, notebooks pédagogiques, intégration continue.
+-   Apprentissage automatique : scikit-learn, validation croisée,
+    régularisation.
+-   Deep learning : PyTorch, [PyTorch Lightning], séries temporelles,
+    imagerie 3D.
+-   Optimisation : comparaison de SGD, Adam, RMSprop.
+-   Statistique : vraisemblance et fonctions de perte, biais-variance,
+    conformal prediction.
+-   Pratiques : Git, conda/pip, notebooks pédagogiques, intégration
+    continue.
 
 ## Reproduire un projet
 
-Chaque projet s'exécute de bout en bout sur Colab ou Kaggle sans réglage.
-En local :
+Chaque projet s'exécute de bout en bout sur Colab ou Kaggle sans
+réglage. En local :
 
-```bash
+``` bash
 git clone https://github.com/GalaxiLir/stats-to-deeplearning.git
 cd stats-to-deeplearning/projects/01-timeseries-forecasting
 conda env create -f environment.yml
