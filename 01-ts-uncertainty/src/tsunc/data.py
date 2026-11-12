@@ -6,14 +6,14 @@ All functions take explicit paths: nothing assumes where the repository lives.
 
 One-call use (from the project folder)::
 
-    frame = extract("31070004", variables=["T", "U"], start="1990", end="2025")
+    frame = extract("31069001", variables=["T", "U"], start="1990", end="2025")
 
 or step by step::
 
     files = list_files("31")                   # table of the files of a département
     files = select_files(files, "1990", "2025")  # keep the files that overlap the range
     paths = download_files(files, "data/raw")  # saved once, reused afterwards
-    frame = build_frame(paths, "31070004", ["T", "U"], "1990", "2025")
+    frame = build_frame(paths, "31069001", ["T", "U"], "1990", "2025")
     blocks = make_blocks(frame)                # train / val / calibration / test
 """
 
@@ -36,7 +36,9 @@ DATASET_API = (
     "https://www.data.gouv.fr/api/1/datasets/donnees-climatologiques-de-base-horaires/"
 )
 DEPARTMENT = "31"  # Haute-Garonne
-STATION_ID = "31070004"  # NUM_POSTE of the station; check it with list_stations() first
+STATION_ID = (
+    "31069001"  # TOULOUSE-BLAGNAC (seen with list_stations on 2026-11-12); not 31070004
+)
 
 # First hour (UTC) of each block, then the end of the last block (excluded).
 # Blocks are disjoint and in this order: train, val (early stopping, hyperparameters),

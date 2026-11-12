@@ -9,7 +9,7 @@ import pytest
 
 from tsunc import data
 
-BLAGNAC, OTHER = "31070004", "31555005"
+BLAGNAC, OTHER = "31069001", "31555005"
 
 
 def _rows(poste, name, start, temperatures, humidity=None):
