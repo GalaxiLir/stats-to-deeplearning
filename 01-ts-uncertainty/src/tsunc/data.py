@@ -163,57 +163,6 @@ _USER_AGENT = {"User-Agent": "tsunc (research portfolio)"}
 # =========================================================================================
 
 
-import gzip
-import itertools
-import json
-import re
-import shutil
-import urllib.parse
-import urllib.request
-from collections.abc import Iterator, Sequence
-from pathlib import Path
-
-import numpy as np
-import pandas as pd
-
-# --- Project settings (edit here) -------------------------------------------------------
-
-DATASET_API = (
-    "https://www.data.gouv.fr/api/1/datasets/donnees-climatologiques-de-base-horaires/"
-)
-DEPARTMENT = "31"  # Haute-Garonne
-STATION_ID = (
-    "31069001"  # NUM_POSTE of TOULOUSE-BLAGNAC (seen with list_stations); not 31070004
-)
-
-# First hour (UTC) of each block, then the end of the last block (excluded).
-# Blocks are disjoint and in this order: train, val (early stopping, hyperparameters),
-# calibration (conformal scores), test (final evaluation).
-BLOCK_STARTS = {
-    "train": "2010-01-01",
-    "val": "2021-01-01",
-    "calibration": "2022-01-01",
-    "test": "2023-01-01",
-}
-BLOCKS_END = "2024-01-01"
-
-# Plausible range of some variables. It catches a wrong unit or decimal mark (for instance
-# tenths of degrees) instead of silently using it. Variables not listed are not checked.
-PLAUSIBLE_RANGES = {"T": (-60.0, 60.0), "TD": (-60.0, 60.0), "U": (0.0, 100.0)}
-
-# --- Names used in the source files (about 190 columns; we read only the ones we need) ---
-
-_TIME = "AAAAMMJJHH"  # e.g. 2004120106 = 2004-12-01 06:00 UTC
-_STATION_COLS = ["NUM_POSTE", "NOM_USUEL", "LAT", "LON", "ALTI"]
-_CHUNKSIZE = 200_000  # rows read at a time, so a big file never has to fit in memory
-_USER_AGENT = {"User-Agent": "tsunc (research portfolio)"}
-
-
-# =========================================================================================
-# 1. Which archives exist, and which ones do we need?
-# =========================================================================================
-
-
 def _years_in_name(name: str) -> tuple[int, int] | None:
     """Find a period such as '2010-2019' in a file name.
 
