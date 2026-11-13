@@ -127,10 +127,10 @@ STATION_ID = "31069001"
 # - calibration: conformal prediction interval calibration
 # - test: final model evaluation
 BLOCK_STARTS = {
-  "train": "2010-01-01",
-  "val": "2021-01-01",
-  "calibration": "2022-01-01",
-  "test": "2023-01-01",
+    "train": "2000-01-01",
+    "val": "2021-01-01",
+    "calibration": "2022-01-01",
+    "test": "2023-01-01",
 }
 BLOCKS_END = "2024-01-01"
 
