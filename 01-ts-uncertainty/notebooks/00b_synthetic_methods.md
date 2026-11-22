@@ -79,7 +79,7 @@ Le notebook rapporte la moyenne des \$\\hat R_n\$ sur \$R\$ trajectoires avec ce
 Un générateur AR(1) ne couvre qu'une famille de dépendance. Voici les familles usuelles ; la dernière colonne dit ce que le notebook en fait. Les familles les moins connues sont décrites dans l'annexe (liens dans la colonne 3).
 
 | Famille | Modèle ou mécanisme | Ce qu'elle capture, pourquoi elle compte | Ici |
-|----|----|----|----|
+|------------------|------------------|------------------|------------------|
 | ARMA, ARIMA, SARIMA | \$\\phi(B)S_t=\\theta(B)\\varepsilon_t\$ (\$B\$ : opérateur retard) ; \$(1-B)\^d(1-B\^m)\^D\$ | Mémoire linéaire à décroissance *géométrique*(\$\\rho(h)=O(r\^h)\$, \$r\<1\$, [T2](00b_annexe_technique.md#T2)) ; racines unitaires (tendance et saisonnalité stochastiques) ; condition de causalité et d'inversibilité ([P3](00b_annexe_technique.md#P3), [T1](00b_annexe_technique.md#T1)) [BJRL15 ; BD91] | E1 (ARMA(1,1)), E3 (marche aléatoire) |
 | ARFIMA | \$(1-B)\^dS_t=\\varepsilon_t\$, \$0\<d\<\\tfrac12\$ | Mémoire longue : \$\\rho(h)\\sim c,h\^{2d-1}\$ (décroissance *hyperbolique*), autocovariances non sommables ; la décroissance en loi de puissance est démontrée en [T2](00b_annexe_technique.md#T2), la forme exacte de la constante est à relire dans [Hos81] ; [GJ80] | non traité |
 | Composantes inobservées, espace d'état | \$X_t=\\mu_t+\\varepsilon_t\$, \$\\mu_t=\\mu\_{t-1}+\\eta_t\$ (niveau local) ; filtre de Kalman [DK12] | Rend \$\\mu_t\$ *aléatoire* ; la tendance déterministe est le cas \$\\sigma\_\\eta\^2=0\$ ; cadre naturel de « \$\\mu\$ ou aléa ? » ([P5](00b_annexe_technique.md#P5)) | E3 |
@@ -189,7 +189,7 @@ Pour \$P\$ diagonalisable, \$P\^h\\to\\mathbf 1\\pi\$ à la vitesse \$\|\\lambda
 Deux définitions rapides pour les lignes « conforme ». *Séparé* : on ajuste le modèle sur un bloc, on calcule les erreurs absolues sur un bloc de calibration, on prend leur quantile d'ordre \$\\lceil(n+1)(1-\\alpha)\\rceil/n\$, et l'intervalle est « prévision ± ce quantile » (exemple chiffré et preuve : [P12](00b_annexe_technique.md#P12)). *Glissant* : même recette, mais le quantile est recalculé à chaque instant sur les \$W\$ dernières erreurs déjà observées.
 
 | Méthode | Ce qu'elle fait | Équivalents (sklearn, R) | Pourquoi elle compte | Première limite observée |
-|----|----|----|----|----|
+|---------------|---------------|---------------|---------------|---------------|
 | Persistance | \$\\hat X\_{t+h\\mid t}=X_t\$ | `numpy` ; R `forecast::naive` | Référence gratuite ; difficile à battre à très court terme quand \$\\rho(1)\$ est grand | Erreur \$\\Delta\\mu_h+S\_{t+h}-S_t\$ : biais saisonnier et variance \$2\\gamma(0)(1-\\rho(h))\$ ; perdue dès \$h=3\$ (E1) |
 | Naïve saisonnière | \$\\hat X\_{t+h\\mid t}=X\_{t+h-m\\lceil h/m\\rceil}\$ | R `forecast::snaive` ; échelle du MASE | Référence standard des séries saisonnières | Recopie une seule observation bruitée : erreur quadratique \$2\\gamma(0)(1-\\rho(m))\\approx2\\gamma(0)\$, double de la climatologie quand \$\\rho(24)\\approx0.02\$ (E1) |
 | Climatologie harmonique | \$\\hat\\mu_t=\\hat\\beta\^\\top d(t)\$, moindres carrés sur l'apprentissage | `LinearRegression(fit_intercept=False)`; R `lm(x ~ t + cos + sin)` | Meilleur prédicteur à long horizon : tout le signal est dans \$\\mu\$ | Ignore l'anomalie courante ; extrapole la tendance telle quelle (E3) |
@@ -205,8 +205,9 @@ Deux définitions rapides pour les lignes « conforme ». *Séparé* : on ajus
 ## 5. Métriques
 
 | Métrique | Définition | Mesure | Piège | Fonction |
-|----|----|----|----|----|
-| MASE |  \$\mathrm{MAE}*{*\mathrm{test}} / \mathrm{MAE}{\mathrm{train}}\^{\text{na\"{\i}ve saisonni\`ere } m}\$ [HK06 ; HA18] | Erreur ponctuelle sans unité ; \$\<1\$ : mieux que la naïve saisonnière | Dépend de l'échelle choisie ; ne dit rien de l'incertitude | `tsunc.metrics.mase` |
+|---------------|---------------|---------------|---------------|---------------|
+| 
+| MASE | $\mathrm{MAE}\sb{\mathrm{test}} / \mathrm{MAE}\sb{\mathrm{train}}^{\text{naïve saisonnière } m}$ [HK06 ; HA18] | Erreur ponctuelle sans unité ; \$\<1\$ : mieux que la naïve saisonnière | Dépend de l'échelle choisie ; ne dit rien de l'incertitude | `tsunc.metrics.mase` |
 | Pinball | \$\\overline{\\rho\_\\tau(y-q\_\\tau)}\$, moyenne sur observations et niveaux | Qualité d'un quantile (perte propre) | Ne se lit pas seule : mélange calibration et finesse | `tsunc.metrics.pinball_loss` |
 | Couverture | \$n\^{-1}\\sum_i\\mathbf 1{l_i\\le y_i\\le u_i}\$ | Fréquence d'inclusion ; cible \$1-\\alpha\$ | *Marginale* : une moyenne ; la *conditionnelle* (par groupe de volatilité) peut être très différente | `tsunc.metrics.coverage` |
 | Largeur moyenne | \$n\^{-1}\\sum_i(u_i-l_i)\$ | Finesse (*sharpness*), dans l'unité de la série | Seule, ne dit rien : l'intervalle vide a la largeur 0 | `tsunc.metrics.mean_width` |
@@ -283,7 +284,7 @@ Soit \$u_t=t/n-\\bar u\$ le régresseur centré et \$\\hat b=\\sum_tu_tX_t/\\sum
 **Contrôle numérique (E3-D).** 1000 marches aléatoires par taille, régression sur le temps, statistique \$t\$ « iid » :
 
 | \$n\$ | \$\\mathbb P(\\lvert t\\rvert\>1.96)\$ | médiane de \$\\lvert t\\rvert/\\sqrt n\$ | médiane de \$n\\cdot\\mathrm{DW}\$ | \$\\operatorname{Var}(\\hat b/\\sqrt n)\$ (théorie 1.2) |
-|----|----|----|----|----|
+|---------------|---------------|---------------|---------------|---------------|
 | 100 | 0.871 | 0.81 | 17.9 | 1.16 |
 | 400 | 0.935 | 0.86 | 18.6 | 1.24 |
 | 1600 | 0.974 | 0.93 | 17.6 | 1.28 |
@@ -364,7 +365,7 @@ Persistance : 0.366, 0.608, 0.802, 0.971 à \$h=1,2,3,4\$, contre 0.718 pour la 
 **E2. Intervalles à 90 %, un pas** (1500 heures de test par réplique).
 
 |   | couverture | faible vol. | vol. moyenne | forte vol. | largeur moy. | score d'intervalle |
-|----|----|----|----|----|----|----|
+|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
 | gaussien, variance constante | 0.903 | 0.964 | 0.921 | 0.823 | 3.269 | 4.267 |
 | conforme séparé | 0.904 | 0.965 | 0.922 | 0.826 | 3.298 | 4.276 |
 | régression quantile + proxy | 0.902 | 0.920 | 0.907 | 0.878 | 3.205 | 4.079 |
@@ -402,7 +403,7 @@ Lecture : à \$h=24\$ les valeurs du gaussien AR sont celles de \$N(0,5)\$ calcu
 **E3-A. « Pente significative » à 5 % alors que la pente est nulle** (\$n=500\$, 2000 répliques).
 
 | \$\\varphi\$ | théorie, écart-type iid | rejets, écart-type iid | rejets, Newey–West |
-|----|----|----|----|
+|------------------|------------------|------------------|------------------|
 | 0 | 0.050 | 0.045 | 0.081 |
 | 0.5 | 0.258 | 0.244 | 0.084 |
 | 0.9 | 0.653 | 0.646 | 0.177 |
@@ -421,7 +422,7 @@ Lecture : à \$h=24\$ les valeurs du gaussien AR sont celles de \$N(0,5)\$ calcu
 **E3-C. Intervalles à 90 %** (1000 répliques par vérité). La couverture à \$h\$ est la fréquence avec laquelle la valeur observée à \$t+h\$ tombe dans l'intervalle ; la largeur est la largeur moyenne de l'intervalle.
 
 | vérité | recette | couv. \$h=1\$ | \$h=24\$ | \$h=100\$ | largeur \$h=1\$ | \$h=24\$ | \$h=100\$ |
-|----|----|----|----|----|----|----|----|
+|---------|---------|---------|---------|---------|---------|---------|---------|
 | marche aléatoire + dérive | marche aléatoire + dérive | 0.905 | 0.895 | 0.861 | 3.28 | 16.09 | 32.84 |
 | marche aléatoire + dérive | tendance + AR(1) | 0.902 | 0.753 | 0.504 | 3.27 | 12.99 | 17.34 |
 | tendance + AR(0.7) | marche aléatoire + dérive | 0.897 | 1.000 | 1.000 | 3.57 | 17.51 | 35.75 |
@@ -438,7 +439,7 @@ La couverture de 0.870 à \$h=100\$ sous la bonne recette n'est pas décomposée
 Colonnes : l'étiquette, la référence, ce que la source établit **pour ce document**, le statut de lecture (légende en tête).
 
 | Étiquette | Référence | Ce que la source établit | Statut |
-|----|----|----|----|
+|------------------|------------------|------------------|------------------|
 | [BCRT23] | Barber, R. F., Candès, E. J., Ramdas, A. et Tibshirani, R. J. (2023). Conformal prediction beyond exchangeability. *Ann. Statist.* 51(2), 816–845. <doi:10.1214/23-AOS2276> | Garanties de couverture sans échangeabilité, par quantiles pondérés et randomisation ; le cas glissant comme cas particulier n'est pas vérifié | ✔ résumé lu |
 | [BSB05] | Benth, F. E. et Šaltytė Benth, J. (2005). Stochastic modelling of temperature variations with a view towards weather derivatives. *Appl. Math. Finance*12(1), 53–85 | Température : moyenne et volatilité saisonnières, bruit de type OU piloté par un processus de Lévy hyperbolique généralisé | ✔ résumé lu |
 | [BD91] | Brockwell, P. J. et Davis, R. A. *Time Series: Theory and Methods*, 2e éd. Springer | Ouvrage de référence (causalité, inversibilité, Wold) ; énoncés de T1 non comparés au texte | ◐ ouvrage non relu |
@@ -510,7 +511,7 @@ Un réseau est une famille paramétrique \$f\_\\theta\$ (de la fenêtre passée 
 *Test (NN-A).* Sur 200 000 tirages d'une loi log-normale, on minimise numériquement chaque perte sur une constante :
 
 | perte | argmin du risque empirique | fonctionnelle de l'échantillon | fonctionnelle de la loi |
-|----|----|----|----|
+|------------------|------------------|------------------|------------------|
 | quadratique \$\\to\$ moyenne | 1.377 | 1.377 | 1.377 |
 | pinball 0.5 \$\\to\$ médiane | 0.999 | 0.999 | 1.000 |
 | pinball 0.9 \$\\to\$ quantile 0.9 | 2.780 | 2.780 | 2.788 |
@@ -526,7 +527,7 @@ La récurrence \$h_t=\\varphi h\_{t-1}+x_t\$ est une cellule récurrente linéai
 *Test (NN-B).* Jacobiennes par différences finies \$\\partial h_T/\\partial h\_{T-k}\$ sur la récurrence, comparées à \$\\varphi\^k\$ :
 
 | \$\\varphi\$ | \$k=1\$ | \$k=10\$               | \$k=50\$ | \$k=100\$            |
-|--------------|---------|------------------------|----------|----------------------|
+|--------------|--------------|-----------------|--------------|---------------|
 | 0.50         | 0.50    | \$9.8\\times10\^{-4}\$ | 0.000    | 0.000                |
 | 0.90         | 0.90    | 0.349                  | 0.005    | \$3\\times10\^{-5}\$ |
 | 0.99         | 0.99    | 0.904                  | 0.605    | 0.366                |
@@ -539,7 +540,7 @@ Les différences finies et \$\\varphi\^k\$ coïncident aux chiffres affichés. P
 *Test (NN-C).* Chaîne de Markov à deux états du §3.3 (\$\\rho_X(h)=0.8\\cdot0.9\^h\$), 300 000 points :
 
 |   | \$h=1\$ | \$h=6\$ | \$h=24\$ |
-|----|----|----|----|
+|------------------|------------------|------------------|------------------|
 | direct : coefficient linéaire optimal (autocorrélation empirique) | 0.718 | 0.424 | 0.068 |
 | théorie \$0.8\\times0.9\^h\$ | 0.720 | 0.425 | 0.064 |
 | récursif : \$\\rho(1)\^h\$ | 0.718 | 0.137 | 0.0004 |
