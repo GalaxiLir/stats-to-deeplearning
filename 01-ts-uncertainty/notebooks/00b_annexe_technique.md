@@ -406,7 +406,7 @@ et KPSS
 **Lecture croisée.**
 
 | ADF (H0 : racine unitaire) | KPSS (H0 : stationnaire) | Lecture |
-|----|----|----|
+|------------------------|------------------------|------------------------|
 | rejette | ne rejette pas | stationnaire |
 | ne rejette pas | rejette | racine unitaire |
 | ne rejette pas | ne rejette pas | peu d'information (puissance faible) |
@@ -720,7 +720,7 @@ spectrale, avec la convention
 $f_S(\lambda)=\frac1{2\pi}\sum_h\gamma(h)e^{-ih\lambda}$). Régresseur
 centré $u_t=t/n-(n+1)/(2n)$, $\sum_tu_t=0$,
 $\sum_tu_t^2=\frac{n^2-1}{12n}\sim\frac n{12}$. Sous $b=0$,
-$\hat b=\sum_tu_tS_t/\sum_tu_t^2$ (le centrage rend l'intercept sans
+$\hat b=\sum_tu_tS_t/\sum_tu_t^2$ (le centrage rend l’intercepte sans
 effet).
 
 **Proposition.** $\operatorname{Var}(\hat b)\sum_tu_t^2\to\omega^2$.
@@ -826,7 +826,7 @@ Avec $\sum\hat e_t^2\sim\sigma^2n^2V$, on obtient 4. ∎
 **Contrôle numérique (cellule E3-D, 1000 marches par** $n$).
 
 | $n$ | $\mathbb P(\lvert t\rvert>1.96)$ | médiane de $\lvert t\rvert/\sqrt n$ | médiane de $n\cdot\mathrm{DW}$ | $\operatorname{Var}(\hat b/\sqrt n)$ (théorie 1.2) |
-|----|----|----|----|----|
+|---------------|---------------|---------------|---------------|---------------|
 | 100 | 0.871 | 0.81 | 17.9 | 1.16 |
 | 400 | 0.935 | 0.86 | 18.6 | 1.24 |
 | 1600 | 0.974 | 0.93 | 17.6 | 1.28 |
